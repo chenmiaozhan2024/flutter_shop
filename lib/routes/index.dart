@@ -6,6 +6,7 @@ Widget getRootWidget(){
   return MaterialApp(
     initialRoute: "/",
     routes: getRootRoutes(),
+    debugShowCheckedModeBanner: false,
   );
 }
 
