@@ -16,6 +16,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
    List<BannerItem> _bannerList=[];
+   List<CategoryItem> _categoryList=[];
   List<Widget> _getScrollChildren(){
     return [
       // 轮播图
@@ -25,7 +26,7 @@ class _HomeViewState extends State<HomeView> {
       SliverToBoxAdapter(child: SizedBox(height: 10,)),
       //分类
       SliverToBoxAdapter(
-        child: HmCategory(),
+        child: HmCategory(categoryList: _categoryList,),
       ),
       SliverToBoxAdapter(child: SizedBox(height: 10,)),
       // 推荐
@@ -54,12 +55,17 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     _getBannderList();
+    _getCategoryList();
     // TODO: implement initState
     super.initState();
   }
   void _getBannderList()async {
      _bannerList= await getBannerListAPI();
     setState(() {});
+  }
+  void _getCategoryList() async{
+    _categoryList=await getCategoryListAPI();
+     setState(() {});
   }
   @override
   Widget build(BuildContext context) {

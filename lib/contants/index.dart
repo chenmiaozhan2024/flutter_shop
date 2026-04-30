@@ -5,4 +5,5 @@ class GlobalConstants{
 }
 class HttpConstants{
   static const String BANNER_LIST="/home/banner";
+  static const String Category_LIST="/home/category/head";
 }
