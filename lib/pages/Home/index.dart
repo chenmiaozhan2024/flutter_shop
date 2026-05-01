@@ -17,6 +17,7 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
    List<BannerItem> _bannerList=[];
    List<CategoryItem> _categoryList=[];
+  SpecialRecommend? _specialRecommend;
   List<Widget> _getScrollChildren(){
     return [
       // 轮播图
@@ -31,7 +32,7 @@ class _HomeViewState extends State<HomeView> {
       SliverToBoxAdapter(child: SizedBox(height: 10,)),
       // 推荐
        SliverToBoxAdapter(
-        child: HmSuggestion(),
+        child: HmSuggestion(specialRecommend: _specialRecommend,),
       ),
       SliverToBoxAdapter(child: SizedBox(height: 10,)),
       // 爆款推荐和
@@ -56,6 +57,7 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     _getBannderList();
     _getCategoryList();
+    _getSpecialRecommend();
     // TODO: implement initState
     super.initState();
   }
@@ -66,6 +68,11 @@ class _HomeViewState extends State<HomeView> {
   void _getCategoryList() async{
     _categoryList=await getCategoryListAPI();
      setState(() {});
+  }
+  void _getSpecialRecommend() async{
+    _specialRecommend=await getProductListAPI();
+    // print("home目录下的${this._specialRecommend}");
+    setState(() {});
   }
   @override
   Widget build(BuildContext context) {
