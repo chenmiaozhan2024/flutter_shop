@@ -16,3 +16,15 @@ Future<List<CategoryItem>> getCategoryListAPI() async{
 Future<SpecialRecommend> getProductListAPI() async{
   return SpecialRecommend.fromJSON(await dioRequest.get(HttpConstants.PRODUCT_LIST));
 }
+//热榜推荐
+Future<SpecialRecommend> getInvogueListAPI() async{
+  return SpecialRecommend.fromJSON(
+    await dioRequest.get(HttpConstants.HotInvogue)
+  );
+}
+//一站式推荐
+Future<SpecialRecommend> getOneStopListAPI() async{
+  return SpecialRecommend.fromJSON(
+    await dioRequest.get(HttpConstants.HotOneStop)
+  );
+}

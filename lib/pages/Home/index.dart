@@ -17,7 +17,9 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
    List<BannerItem> _bannerList=[];
    List<CategoryItem> _categoryList=[];
-  SpecialRecommend? _specialRecommend;
+   SpecialRecommend? _specialRecommend;
+   SpecialRecommend? _oneStopResult;//一站集成
+   SpecialRecommend? _inVogueResult;//热榜推荐
   List<Widget> _getScrollChildren(){
     return [
       // 轮播图
@@ -41,9 +43,9 @@ class _HomeViewState extends State<HomeView> {
           padding: EdgeInsets.symmetric(horizontal: 10),
           child: Flex(direction: Axis.horizontal,
           children: [
-          Expanded(child: HmHot()),
+          Expanded(child: HmHot(inVogueResult:_inVogueResult,type:"hot")),
           SizedBox(width: 10,),
-          Expanded(child: HmHot())
+          Expanded(child: HmHot(oneStopResult:_oneStopResult,type:'step'))
           ])
          ),
       ),
@@ -58,6 +60,9 @@ class _HomeViewState extends State<HomeView> {
     _getBannderList();
     _getCategoryList();
     _getSpecialRecommend();
+    _getInVogueResult();//获取热榜推荐
+    _getStopResult();//获取一站集成
+
     // TODO: implement initState
     super.initState();
   }
@@ -73,6 +78,16 @@ class _HomeViewState extends State<HomeView> {
     _specialRecommend=await getProductListAPI();
     // print("home目录下的${this._specialRecommend}");
     setState(() {});
+  }
+  //获取热榜推荐数据
+  void _getInVogueResult()async {
+    _inVogueResult=await getInvogueListAPI();
+     setState(() {});
+  }
+  //获取一站集成数据
+  void _getStopResult() async{
+    _oneStopResult=await getOneStopListAPI();
+     setState(() {});
   }
   @override
   Widget build(BuildContext context) {
