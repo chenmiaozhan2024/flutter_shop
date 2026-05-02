@@ -20,6 +20,9 @@ class _HomeViewState extends State<HomeView> {
    SpecialRecommend? _specialRecommend;
    SpecialRecommend? _oneStopResult;//一站集成
    SpecialRecommend? _inVogueResult;//热榜推荐
+   // 推荐列表
+  List<GoodDetailItem> _recommendList = [];
+
   List<Widget> _getScrollChildren(){
     return [
       // 轮播图
@@ -50,7 +53,7 @@ class _HomeViewState extends State<HomeView> {
          ),
       ),
       SliverToBoxAdapter(child: SizedBox(height: 10,)),
-      HmMoreList()
+      HmMoreList(recommendList:_recommendList)
     ];
   }
 
@@ -62,7 +65,7 @@ class _HomeViewState extends State<HomeView> {
     _getSpecialRecommend();
     _getInVogueResult();//获取热榜推荐
     _getStopResult();//获取一站集成
-
+     _getRecommendList();
     // TODO: implement initState
     super.initState();
   }
@@ -88,6 +91,10 @@ class _HomeViewState extends State<HomeView> {
   void _getStopResult() async{
     _oneStopResult=await getOneStopListAPI();
      setState(() {});
+  }
+    void _getRecommendList() async {
+    _recommendList = await getRecommendListAPI({"limit": 10});
+    setState(() {});
   }
   @override
   Widget build(BuildContext context) {
