@@ -20,6 +20,7 @@ class _HomeViewState extends State<HomeView> {
    SpecialRecommend? _specialRecommend;
    SpecialRecommend? _oneStopResult;//一站集成
    SpecialRecommend? _inVogueResult;//热榜推荐
+   final ScrollController _controller=ScrollController();
    // 推荐列表
   List<GoodDetailItem> _recommendList = [];
 
@@ -65,9 +66,18 @@ class _HomeViewState extends State<HomeView> {
     _getSpecialRecommend();
     _getInVogueResult();//获取热榜推荐
     _getStopResult();//获取一站集成
-     _getRecommendList();
+    _getRecommendList();
+    _registerEvent();
     // TODO: implement initState
     super.initState();
+  }
+  // 注册事件
+  void _registerEvent(){
+    _controller.addListener((){
+      if(_controller.position.pixels>=(_controller.position.maxScrollExtent-50)){
+        _getRecommendList();
+      }
+    });
   }
   void _getBannderList()async {
      _bannerList= await getBannerListAPI();
@@ -92,14 +102,31 @@ class _HomeViewState extends State<HomeView> {
     _oneStopResult=await getOneStopListAPI();
      setState(() {});
   }
+  int _page=1;//页面
+  bool _isLoading=false;//当前正在加载状态
+  bool _hasMore=true;
+
     void _getRecommendList() async {
-    _recommendList = await getRecommendListAPI({"limit": 10});
+      //如果是加载状态或者已经没有下一页了
+      if(_isLoading||!_hasMore){
+        return;
+      }
+      _isLoading=true;
+       int requestLimit=_page*8;
+      _recommendList = await getRecommendListAPI({"limit":  requestLimit});
+      _isLoading=false;
     setState(() {});
+    //已经没有下一页了
+    if(_recommendList.length<requestLimit){
+      _hasMore=false;
+      return;
+    }
   }
   @override
   Widget build(BuildContext context) {
     return Container(
        child: CustomScrollView(
+        controller: _controller,
         slivers: _getScrollChildren(),
        )
     );
